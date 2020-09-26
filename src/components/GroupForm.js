@@ -76,24 +76,28 @@ class GroupForm extends Component {
         return (  
             <div>
                 <form onSubmit={this.submitHandler}>
-                    <select name="map" onChange={this.changeHandler}>
+                <label for="map">Map</label><br></br>
+                    <select id="map" name="map" onChange={this.changeHandler}>
                         <option value="polus">Polus</option>
                         <option value="skeld">Skeld</option>
                         <option value="mirahq">MIRAHQ</option>
                     </select>
-
-                    <select name="numOfImpos" onChange={this.changeHandler}>
+                    
+                    <label for="numOfImpos">Number of Impostors</label>
+                    <select id="numOfImpos" name="numOfImpos" onChange={this.changeHandler}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     
-                    <select name="confirmEject" onChange={this.changeHandler}>
+                    <label for="confirmEject">Confirm Eject Enabled</label>
+                    <select id="confirmEject" name="confirmEject" onChange={this.changeHandler}>
                         <option value={true}>Yes</option>
                         <option value={false}>No</option>
                     </select>
 
-                    <select name="numOfMeetings" onChange={this.changeHandler}>
+                    <label for="numOfMeetings">Number of Meetings</label>
+                    <select id="numOfMeetings" name="numOfMeetings" onChange={this.changeHandler}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -105,45 +109,58 @@ class GroupForm extends Component {
                         <option value="9">9</option>
                     </select>
 
-                    <input name="emcd" type="number" min="0" max="60" value={emcd} onChange={this.changeHandler}/>
+                    <label for="emcd">Emergency Cooldown</label>
+                    <input id="emcd" name="emcd" type="number" min="0" max="60" value={emcd} onChange={this.changeHandler}/>
                     
-                    <input name="discussionTime" type="number" min="0" max="120" value={discussionTime} onChange={this.changeHandler}/>
+                    <label for="discussionTime">Discussion Time</label>
+                    <input id="discussionTime" name="discussionTime" type="number" min="0" max="120" value={discussionTime} onChange={this.changeHandler}/>
 
-                    <input name="votingTime" type="number" min="0" max="300" value={votingTime} onChange={this.changeHandler}/>
+                    <label for="votingTime">Voting Time</label>
+                    <input id="votingTime" name="votingTime" type="number" min="0" max="300" value={votingTime} onChange={this.changeHandler}/>
 
-                    <input name="playerSpeed" type="number" min="0.5" max="3.0" value={playerSpeed} onChange={this.changeHandler}/>
+                    <label for="playerSpeed">Player Speed</label>
+                    <input id="playerSpeed" name="playerSpeed" type="number" min="0.5" max="3.0" value={playerSpeed} onChange={this.changeHandler}/>
 
-                    <input name="crewVision" type="number" min="0.25" max="5.0" value={crewVision} onChange={this.changeHandler}/>
+                    <label for="crewVision">Crew Vision</label>
+                    <input id="crewVision" name="crewVision" type="number" min="0.25" max="5.0" value={crewVision} onChange={this.changeHandler}/>
     
-                    <input name="imposVision" type="number" min="0.25" max="5.0" value={imposVision} onChange={this.changeHandler}/>
+                    <label for="imposVision">Impostor Vision</label>
+                    <input id="imposVision" name="imposVision" type="number" min="0.25" max="5.0" value={imposVision} onChange={this.changeHandler}/>
+                    
+                    <label for="killCd">Kill Cooldown</label>
+                    <input id="killCd" name="killCd" type="number" min="10" max="60" value={killCd} onChange={this.changeHandler}/>
 
-                    <input name="killCd" type="number" min="10" max="60" value={killCd} onChange={this.changeHandler}/>
-
-                    <select name="killDistance" onChange={this.changeHandler}>
+                    <label for="killDistance">Kill Distance</label>
+                    <select id="killDistance" name="killDistance" onChange={this.changeHandler}>
                         <option value="short">Short</option>
                         <option value="medium">Medium</option>
                         <option value="long">Long</option>
                     </select>
 
-                    <select name="visualTask" onChange={this.changeHandler}>
+                    <label for="visualTask">Visual Task</label>
+                    <select id="visualTask" name="visualTask" onChange={this.changeHandler}>
                         <option value={true}>Yes</option>
                         <option value={false}>No</option>
                     </select>
 
-                    <select name="commonTask" onChange={this.changeHandler}>
+                    <label for="commonTask">Common Task</label>
+                    <select id="commonTask" name="commonTask" onChange={this.changeHandler}>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                     </select>
 
-                    <select name="longTask" onChange={this.changeHandler}>
+                    
+                    <label for="longTask">Long Task</label>
+                    <select id="longTask" name="longTask" onChange={this.changeHandler}>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
 
-                    <select name="shortTask" onChange={this.changeHandler}>
+                    <label for="shortTask">Short Task</label>
+                    <select id="shortTask" name="shortTask" onChange={this.changeHandler}>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -152,18 +169,21 @@ class GroupForm extends Component {
                         <option value="5">5</option>
                     </select>
 
+                    <label for="skillLevel">Skill Level</label>
                     <select name="skillLevel" onChange={this.changeHandler}>
                         <option value="casual">Casual</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="expert">Expert</option>
                     </select>
 
-                    <select name="micRequired" onChange={this.changeHandler}>
+                    <label for="micRequired">Mic Required?</label>        
+                    <select id="micRequired" name="micRequired" onChange={this.changeHandler}>
                         <option value={true}>Yes</option>
                         <option value={false}>No</option>
                     </select>
 
-                    <select name="playerLimit" onChange={this.changeHandler}>
+                    <label for="playerLimit">Player Limit</label>
+                    <select id="playerLimit" name="playerLimit" onChange={this.changeHandler}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
