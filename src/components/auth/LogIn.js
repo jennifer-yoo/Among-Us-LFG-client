@@ -27,7 +27,7 @@ class LogIn extends Component {
         .then(data => {
             localStorage.setItem("token", data.jwt)
             localStorage.setItem("userId", data.user.id)
-            console.log(data)
+            this.props.setToken(this.props.checkToken())
         })
     }
 
@@ -40,6 +40,7 @@ class LogIn extends Component {
 
     testGet = () => {
         const token = localStorage.getItem("token")
+        console.log('in test get:', token)
         let options = {
             headers: {'Authorization': `Bearer ${token}`}
         }

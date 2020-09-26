@@ -30,6 +30,7 @@ class Registration extends Component {
         fetch('http://localhost:3001/api/v1/users', options)
         .then(res => res.json())
         .then(console.log)
+        this.props.setToken(this.props.checkToken())
     }
 
     handleChange = (event) => {
