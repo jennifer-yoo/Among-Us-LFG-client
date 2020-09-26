@@ -33,7 +33,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.token)
     return (
       <div className="App">
         <h1>Among Us LFG</h1>

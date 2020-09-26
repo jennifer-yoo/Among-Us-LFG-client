@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GroupContainer from './GroupContainer.js'
 
 class DashBoard extends Component {
     state = {  }
@@ -13,6 +14,8 @@ class DashBoard extends Component {
         return (
             <div>
                 <h1>Dashboard</h1>
+                <GroupContainer />
+                <br></br>
                 <button onClick={this.logOut}>Logout</button>
             </div>
         );
