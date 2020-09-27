@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import GroupForm from '../components/GroupForm'
 import GroupCard from '../components/GroupCard'
+import { ActionCable } from 'react-actioncable-provider'
 
 class GroupContainer extends Component {
     state = {
-        group: []
-    }
-
-    componentDidMount() {
-        const token = localStorage.getItem("token")
-        let options = {
-            headers: {'Authorization': `Bearer ${token}`}
-        }
-        fetch('http://localhost:3001/api/v1/groups', options)
-        .then(resp => resp.json())
-        .then(data => {
-            this.setState({group: data})
-        })
     }
 
     renderCards = () => {
-        return this.state.group.map(el => 
-            <GroupCard key={el.id} info={el}/>
+        console.log(this.props.groups)
+        return this.props.groups.map(el => 
+                <div>
+                    <ActionCable 
+                        key={el.id} 
+                        info={el}
+                        channel={ {channel: 'MembershipsChannel', group: el.id} }
+                        onReceived={this.props.handleMembers}
+                        />
+                    <GroupCard key={el.id} info={el}/>
+                </div>
         )
     }
 
     render() { 
-        console.log(this.state.group)
         return ( 
             <>
                 <GroupForm />
@@ -34,7 +30,7 @@ class GroupContainer extends Component {
                     {this.renderCards()}
                 </div>
             </>
-         );
+        );
     }
 }
 

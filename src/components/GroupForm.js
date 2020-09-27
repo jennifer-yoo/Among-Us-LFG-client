@@ -67,8 +67,6 @@ class GroupForm extends Component {
             })
         }
         fetch('http://localhost:3001/api/v1/groups', options)
-        .then(res => res.json())
-        .then(console.log)
     }
 
     render() { 

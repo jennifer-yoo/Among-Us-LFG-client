@@ -20,8 +20,6 @@ class GroupCard extends Component {
             })
         }
         fetch('http://localhost:3001/api/v1/memberships', options)
-        .then(res => res.json())
-        .then(console.log)
     }
 
     currentMembers = () => {

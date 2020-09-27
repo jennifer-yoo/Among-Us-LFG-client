@@ -1,8 +1,41 @@
 import React, { Component } from 'react';
 import GroupContainer from './GroupContainer.js'
+import { ActionCable } from 'react-actioncable-provider'
+import GroupForm from '../components/GroupForm'
 
 class DashBoard extends Component {
-    state = {  }
+    state = {
+        groups: []
+    }
+
+    componentDidMount() {
+        const token = localStorage.getItem("token")
+        let options = {
+            headers: {'Authorization': `Bearer ${token}`}
+        }
+        fetch('http://localhost:3001/api/v1/groups', options)
+        .then(resp => resp.json())
+        .then(data => {
+            this.setState({groups: data})
+        })
+    }
+
+    updateGroups = response => {
+        console.log(response)
+        this.setState(()=> ({
+            groups: [...this.state.groups, response.group]
+        })) 
+    }
+
+    handleReceivedMembership = response => {
+        const { membership } = response;
+        const groups = [...this.state.groups];
+        const group = groups.find(
+        group => group.id ===  membership.group_id
+        );
+        group.members = [...group.members, membership];
+        this.setState({ groups });
+    };
 
     logOut = () => {
         localStorage.clear()
@@ -10,11 +43,15 @@ class DashBoard extends Component {
     }
 
     render() { 
-        
+        const {groups} = this.state
         return (
             <div>
+                <ActionCable
+                    channel={{channel: 'GroupsChannel' }}
+                    onReceived={this.updateGroups} />
+                <GroupForm />
+                {this.state.groups.length ? <GroupContainer groups={groups} handleMembers={this.handleReceivedMembership} /> : null}
                 <h1>Dashboard</h1>
-                <GroupContainer />
                 <br></br>
                 <button onClick={this.logOut}>Logout</button>
             </div>
