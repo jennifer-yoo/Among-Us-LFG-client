@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GroupContainer from './GroupContainer.js'
-import { ActionCable } from 'react-actioncable-provider'
+import { ActionCableConsumer } from 'react-actioncable-provider'
 import GroupForm from '../components/GroupForm'
 
 class DashBoard extends Component {
@@ -28,10 +28,11 @@ class DashBoard extends Component {
     }
 
     handleReceivedMembership = response => {
+        console.log(response)
         const { membership } = response;
         const groups = [...this.state.groups];
         const group = groups.find(
-        group => group.id ===  membership.group_id
+        group => parseInt(group.id) ===  parseInt(membership.group.id)
         );
         group.members = [...group.members, membership];
         this.setState({ groups });
@@ -46,7 +47,7 @@ class DashBoard extends Component {
         const {groups} = this.state
         return (
             <div>
-                <ActionCable
+                <ActionCableConsumer
                     channel={{channel: 'GroupsChannel' }}
                     onReceived={this.updateGroups} />
                 <GroupForm />

@@ -11,11 +11,11 @@ class Auth extends Component {
     render() { 
         const { login, signup, clickHandler, checkLogin, setToken } = this.props
         return (
-            <div>
+            <div className="auth">
                 { login ? <LogIn checkToken={checkLogin} setToken={setToken} /> : null }
                 { signup ? <Registration checkToken={checkLogin} setToken={setToken}/> : null }
-                <button name="signup" onClick={(e) => clickHandler(e)}>Sign Up</button>
-                <button name="login" onClick={(e) => clickHandler(e)}>Login</button>
+                <button className="signup" name="signup" onClick={(e) => clickHandler(e)}>SignUp</button>
+                <button className="login "name="login" onClick={(e) => clickHandler(e)}>Login</button>
             </div>
         );
     }

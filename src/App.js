@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import Auth from './containers/Auth'
 import DashBoard from './containers/DashBoard.js'
+import red from './images/characters/red_amongus.png'
+import blue from './images/characters/mirror_blue_amongus.png'
 
 class App extends React.Component {
 
@@ -35,8 +37,17 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1>Among Us LFG</h1>
-        <h3>Welcome!</h3>
+        <h1 className="header">Among Us LFG</h1>
+
+        <div className="firstpic">
+          <img src={red} alt="red"></img>
+        </div>
+
+        <div className="secondpic">
+          <img src={blue} alt="blue"></img>
+        </div>
+
+
         { this.state.token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={this.state.login} signup={this.state.signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
         {/* { this.state.token ? <GroupContainer /> : null} */}
       </div>

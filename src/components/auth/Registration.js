@@ -12,6 +12,11 @@ class Registration extends Component {
 
     handleSubmit = (event) => {
         const {username, password, discord, avatar} = this.state
+
+        if (avatar === "") {
+            this.setState({avatar: "https://lh3.googleusercontent.com/VHB9bVB8cTcnqwnu0nJqKYbiutRclnbGxTpwnayKB4vMxZj8pk1220Rg-6oQ68DwAkqO=s360-rw"})
+        }
+
         event.persist()
         event.preventDefault()
         let options = {
@@ -64,7 +69,7 @@ class Registration extends Component {
                     name="avatar" 
                     value={avatar} 
                     onChange={this.handleChange} 
-                    required/>
+                    />
 
                     <input 
                     type="text" 
