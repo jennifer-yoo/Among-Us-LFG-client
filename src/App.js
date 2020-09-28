@@ -40,11 +40,11 @@ class App extends React.Component {
         <h1 className="header">Among Us LFG</h1>
 
         <div className="firstpic">
-          <img src={red} alt="red"></img>
+          <img id="red" src={red} alt="red"></img>
         </div>
 
         <div className="secondpic">
-          <img src={blue} alt="blue"></img>
+          <img id="blue" src={blue} alt="blue"></img>
         </div>
 
 

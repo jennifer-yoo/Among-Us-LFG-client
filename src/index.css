@@ -8,10 +8,11 @@
 } */
 
 body {
-  background-color: #ffff00;
+  /* background-color: #ffff00; */
+  background-image: url(images/space-image.png);
   font-family: 'myWebFont';
   display: grid;
-  margin: 0;
+  margin: 0 0 0 0 ;
 }
 
 @font-face {
@@ -39,46 +40,60 @@ body {
   font-size: 120px;
   text-align: center;
   grid-area: Header;
-  background-color: black;
+  background-color: transparent;
   border-bottom: 5px solid white;
   color: white;
+  /* text-shadow: black; */
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   /* background-color: white */
+
 }
 
 .firstpic {
   grid-area: "One-picture";
   margin: auto;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: end;
   /* background-color: white; */
+  animation: bobble 2s infinite;
+  /* width: 100px; */
 }
 
 .secondpic {
   grid-area: "Second-Picture";
   display: flex;
   margin: auto;
-  justify-content: flex-end;
-  /* background-color: white; */
+  /* align-content: flex-start; */
+  /* background-color: white;
+  justify-self: start;
+  /* width: 100px; */
+  animation: bobble 2s infinite;
+  
 
 }
 
 .App {
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 40% 60%;
+  grid-template-columns: 320px auto auto 320px;
+  grid-template-rows: 20% 60%;
   gap: 1px 1px;
   grid-template-areas:
     "Header Header Header Header"
     "One-picture Auth Auth Second-Picture";
-  animation: bobble 2s infinite;
-  justify-items: stretch;
-  background-image: url(images/space-image.png);
+  /* animation: bobble 2s infinite; */
+  /* justify-items: stretch; */
+  /* background-image: url(images/space-image.png); */
   background-repeat: no-repeat;
   background-position: center;
-  background-size: auto
+  background-size: auto;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
 }
 
 .auth {
@@ -112,6 +127,11 @@ button {
   margin: 2px 2px;
 }
 
+
+
+#blue {
+  justify-self: flex-start;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
