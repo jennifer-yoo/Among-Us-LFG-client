@@ -56,7 +56,7 @@ class LogIn extends Component {
     render() { 
         const {username, password} = this.state
         return (
-            <div>
+            <div className="loginform">
                 <form onSubmit={this.handleSubmit}>
                     <input 
                     type="text" 

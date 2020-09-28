@@ -3,10 +3,13 @@ import GroupContainer from './GroupContainer.js'
 import { ActionCableConsumer } from 'react-actioncable-provider'
 import GroupForm from '../components/GroupForm'
 import '../DashBoard.css'
+import { Link } from 'react-router-dom';
+
 
 class DashBoard extends Component {
     state = {
-        groups: []
+        groups: [],
+        toggle: false,
     }
 
     componentDidMount() {
@@ -28,15 +31,15 @@ class DashBoard extends Component {
         })) 
     }
 
-    handleReceivedMembership = response => {
-        console.log(response)
+    handleReceivedGroups = response => {
+        console.log("response:", response)
         const { membership } = response;
         const groups = [...this.state.groups];
-        const group = groups.find(
+        const foundGroup = groups.find(
         group => parseInt(group.id) ===  parseInt(membership.group.id)
         );
-        group.members = [...group.members, membership];
-        this.setState({ groups });
+        foundGroup.members = [...foundGroup.members, membership.user];
+        this.setState({groups})
     };
 
     logOut = () => {
@@ -44,16 +47,25 @@ class DashBoard extends Component {
         this.props.setToken(this.props.checkLogin())
     }
 
+    toggleHandler = () => {
+        this.setState((previousState) => ({toggle: !previousState.toggle}))
+    }
+
     render() { 
+        console.log(this.state)
         const {groups} = this.state
         return (
             <div className="dashboard">
                 <ActionCableConsumer
                     channel={{channel: 'GroupsChannel' }}
                     onReceived={this.updateGroups} />
+                <ActionCableConsumer 
+                    channel={ {channel: 'GroupChannel'} }
+                    onReceived={this.handleReceivedGroups}/>
                 <h1>Dashboard</h1>
-                <GroupForm />
-                {this.state.groups.length ? <GroupContainer groups={groups} handleMembers={this.handleReceivedMembership} /> : null}
+                <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
+                { this.state.toggle ? <GroupForm /> : null}
+                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} /> : null}
                 <br></br>
                 <button className="logoutbutton" onClick={this.logOut}>Logout</button>
             </div>

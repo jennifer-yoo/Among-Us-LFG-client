@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
 import GroupCard from '../components/GroupCard'
-import { ActionCableConsumer } from 'react-actioncable-provider'
 
 class GroupContainer extends Component {
-    state = {
-    }
+    
 
     renderCards = () => {
-        console.log(this.props.groups)
         return this.props.groups.map(el => 
-                <div>
-                    <ActionCableConsumer 
-                        info={el}
-                        channel={ {channel: 'MembershipsChannel', group: el.id} }
-                        onReceived={this.props.handleMembers}
-                        />
-                    <GroupCard key={el.id} info={el}/>
-                </div>
+            <GroupCard key={el.id} info={el} handleReceivedGroups={this.props.handleReceivedGroups}/>
         )
     }
 

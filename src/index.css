@@ -7,3 +7,29 @@
   -moz-osx-font-smoothing: grayscale;
 } */
 
+/* html, body, #root, .App {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+} */
+
+.html {
+  height: 100vw;
+  width: 100vw;
+
+}
+
+body {
+  height:100vw;
+  width: 100vw;
+  font-family: 'myWebFont';
+  margin: 0;
+}
+
+
+
+@font-face {
+  font-family: 'myWebFont';
+  src: url('images/Alone_On_Earth.otf') format('woff2')
+}
