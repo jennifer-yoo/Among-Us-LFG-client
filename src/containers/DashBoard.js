@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import GroupContainer from './GroupContainer.js'
 import { ActionCableConsumer } from 'react-actioncable-provider'
 import GroupForm from '../components/GroupForm'
+import '../DashBoard.css'
 
 class DashBoard extends Component {
     state = {
@@ -46,15 +47,15 @@ class DashBoard extends Component {
     render() { 
         const {groups} = this.state
         return (
-            <div>
+            <div className="dashboard">
                 <ActionCableConsumer
                     channel={{channel: 'GroupsChannel' }}
                     onReceived={this.updateGroups} />
+                <h1>Dashboard</h1>
                 <GroupForm />
                 {this.state.groups.length ? <GroupContainer groups={groups} handleMembers={this.handleReceivedMembership} /> : null}
-                <h1>Dashboard</h1>
                 <br></br>
-                <button onClick={this.logOut}>Logout</button>
+                <button className="logoutbutton" onClick={this.logOut}>Logout</button>
             </div>
         );
     }

@@ -25,6 +25,7 @@ class LogIn extends Component {
         fetch('http://localhost:3001/api/v1/login', options)
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             localStorage.setItem("token", data.jwt)
             localStorage.setItem("userId", data.user.id)
             localStorage.setItem("username", data.user.username)
@@ -60,6 +61,7 @@ class LogIn extends Component {
                     <input 
                     type="text" 
                     name="username" 
+                    placeholder="Username"
                     value={username} 
                     onChange={this.handleChange} 
                     required/>
@@ -67,13 +69,14 @@ class LogIn extends Component {
                     <input 
                     type="password" 
                     name="password" 
+                    placeholder="Password"
                     value={password} 
                     onChange={this.handleChange} 
                     required/>
 
-                    <button type="submit">Submit</button>
+                    <button className="submitbtn" type="submit">Submit</button>
                 </form>
-                <button onClick={this.testGet}>Test Get from Users</button>
+                <button className="submitbtn" onClick={this.testGet}>Test Get from Users</button>
             </div>
         );
     }

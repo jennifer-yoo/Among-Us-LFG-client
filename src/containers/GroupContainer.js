@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GroupForm from '../components/GroupForm'
 import GroupCard from '../components/GroupCard'
 import { ActionCableConsumer } from 'react-actioncable-provider'
 
@@ -24,7 +23,6 @@ class GroupContainer extends Component {
     render() { 
         return ( 
             <>
-                <GroupForm />
                 <div className="groupContainer">
                     {this.renderCards()}
                 </div>

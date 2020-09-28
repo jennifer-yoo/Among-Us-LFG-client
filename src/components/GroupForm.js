@@ -72,7 +72,7 @@ class GroupForm extends Component {
     render() { 
         const {emcd, discussionTime, votingTime, playerSpeed, crewVision, imposVision, killCd} = this.state
         return (  
-            <div>
+            <div className="groupform">
                 <form onSubmit={this.submitHandler}>
                 <label for="map">Map</label><br></br>
                     <select id="map" name="map" onChange={this.changeHandler}>
@@ -193,7 +193,7 @@ class GroupForm extends Component {
                         <option value="9">9</option>
                     </select>
 
-                    <button type="submit">Submit</button>
+                    <button className="submitbtn" type="submit">Submit</button>
                 </form>
             </div>
         );

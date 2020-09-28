@@ -13,9 +13,9 @@ class Registration extends Component {
     handleSubmit = (event) => {
         const {username, password, discord, avatar} = this.state
 
-        if (avatar === "") {
-            this.setState({avatar: "https://lh3.googleusercontent.com/VHB9bVB8cTcnqwnu0nJqKYbiutRclnbGxTpwnayKB4vMxZj8pk1220Rg-6oQ68DwAkqO=s360-rw"})
-        }
+        // if (avatar === "") {
+        //     this.setState({avatar: "https://lh3.googleusercontent.com/VHB9bVB8cTcnqwnu0nJqKYbiutRclnbGxTpwnayKB4vMxZj8pk1220Rg-6oQ68DwAkqO=s360-rw"})
+        // }
 
         event.persist()
         event.preventDefault()
@@ -53,6 +53,7 @@ class Registration extends Component {
                     <input 
                     type="text" 
                     name="username" 
+                    placeholder="Username"
                     value={username} 
                     onChange={this.handleChange} 
                     required/>
@@ -60,6 +61,7 @@ class Registration extends Component {
                     <input 
                     type="password" 
                     name="password" 
+                    placeholder="Password"
                     value={password} 
                     onChange={this.handleChange} 
                     required/>
@@ -67,6 +69,7 @@ class Registration extends Component {
                     <input 
                     type="text" 
                     name="avatar" 
+                    placeholder="Upload your Profile pic"
                     value={avatar} 
                     onChange={this.handleChange} 
                     />
@@ -74,11 +77,12 @@ class Registration extends Component {
                     <input 
                     type="text" 
                     name="discord" 
+                    placeholder="Discord Username"
                     value={discord} 
                     onChange={this.handleChange} 
                     required/>
 
-                    <button type="submit">Submit</button>
+                    <button className="submitbtn" type="submit">Submit</button>
                 </form>
             </div>
         );

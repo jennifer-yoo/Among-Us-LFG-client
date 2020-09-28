@@ -91,7 +91,7 @@ class GroupCard extends Component {
                     Mic Required: {this.props.info.micRequired}
                 </p>
                 
-                <button onClick={this.joinHandler}>Join Button</button>
+                <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
             </div>
         );
     }
