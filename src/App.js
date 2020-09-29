@@ -45,18 +45,14 @@ class App extends React.Component {
             <h4 className="dheader">Among Us LFG</h4> : 
             <>
               <h1 className="header">Among Us LFG</h1>
-
               <div className="firstpic">
-                <img className="red" src={red} alt="red"></img>
+                <img src={red} alt="red"></img>
               </div>
-
               <div className="secondpic">
-                <img className="blue" src={blue} alt="blue"></img>
+                <img src={blue} alt="blue"></img>
               </div>
             </>  
           }
-
-          
           { this.state.token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={this.state.login} signup={this.state.signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
           <Route path='api/v1/groups/new' component={GroupForm} />
         </div>

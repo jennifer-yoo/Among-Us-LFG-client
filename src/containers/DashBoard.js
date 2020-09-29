@@ -51,6 +51,28 @@ class DashBoard extends Component {
         this.setState((previousState) => ({toggle: !previousState.toggle}))
     }
 
+    deleteHandler = (id) => {
+        const token = localStorage.getItem("token")
+        let options = {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        fetch(`http://localhost:3001/api/v1/groups/${id}`, options)
+    }
+
+    handleDeletedGroup = response => {
+        console.log("delete:", response)
+        const { group } = response
+        const filteredGroup = [...this.state.groups].filter(
+            el => parseInt(el.id) !==  parseInt(group.id)
+            );
+        this.setState({groups: filteredGroup})
+    }
+
     render() { 
         console.log(this.state)
         const {groups} = this.state
@@ -62,10 +84,13 @@ class DashBoard extends Component {
                 <ActionCableConsumer 
                     channel={ {channel: 'GroupChannel'} }
                     onReceived={this.handleReceivedGroups}/>
+                <ActionCableConsumer 
+                    channel={ {channel: 'DeleteChannel'} }
+                    onReceived={this.handleDeletedGroup}/>
                 <h1>Dashboard</h1>
                 <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
                 { this.state.toggle ? <GroupForm /> : null}
-                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} /> : null}
+                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler} /> : null}
                 <br></br>
                 <button className="logoutbutton" onClick={this.logOut}>Logout</button>
             </div>

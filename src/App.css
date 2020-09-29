@@ -2,10 +2,9 @@ body {
     /* background-color: #ffff00; */
     background-image: url('images/space-image.png');
     font-family: 'myWebFont';
-    display: grid;
-    margin: auto;
-    width: 100%;
-    height:100%;
+    /* margin: auto; */
+    /* width: 100%;
+    height:100%; */
   }
   
   @font-face {
@@ -32,49 +31,63 @@ body {
   
   
   .header {
-
     font-size: 120px;
     text-align: center;
-    grid-area: Header;
     background-color: transparent;
     /* border-bottom: 5px solid white; */
     /* border-top: 5px solid white; */
     color: white;
     margin: 0;
     letter-spacing: 5px;
+    /* padding: 10px 10px; */
+  }
+
+
+
+  .welcome {
+    /* grid-area: Welcome; */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 10px;
-    /* background-color: white */
+    /* flex-flow: row; */
+    justify-content: space-evenly;
+    /* align-items: center; */
+    /* height: 100vh; */
+    width: 100vw;
   }
   
   .firstpic {
-    grid-area: "One-picture";
-    margin: auto;
-    display: grid;
+    /* grid-area: "One-picture"; */
+    /* height: 100%;
+    width: 100vw; */
+    /* display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     grid-template-rows: 50% 50%;
-    animation: bobble 2s infinite;
     grid-template-areas:
-      "red red none none"
-      "red red none none";
-      /* border: 2px solid white; */
-
-    /* background-color: white; */
+    "red red none none"
+    "red red none none"; */
+    border: 2px solid white;
+      /* background-color: white; */
+    animation: bobble 2s infinite;
+    /* align-self: start; */
+    justify-self: flex-start;
+    /* margin-right: 0px;   */
+    justify-items: center;
   }
   
   .secondpic {
-    grid-area: "Second-Picture";
-    display: flex;
-    margin: auto;
+    /* grid-area: "Second-Picture";
+    display: grid; */
+    /* height: 100%;
+    width: 100vw; */
+
     /* align-items: center; */
+    /* justify-content: center; */
+
     animation: bobble 2s infinite;
-    /* border: 2px solid white; */
+    border: 2px solid white;
     /* background-color: white; */
-    align-self: end;
-    justify-self: end;
-    margin-left: 0px;  
+    /* align-self: end;
+    justify-self: end; */
+    margin-left: -20px;  
   }
 
   .red {
@@ -83,15 +96,16 @@ body {
   }
   
   .App {
-    display: grid;
-    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    /* width: 100vw;
     height: 100vh;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 200px 1fr;
     gap: 1px 1px;
     grid-template-areas:
-      "Header Header Header"
-      "One-picture Auth Second-Picture";
+      "Header Header Header" */
+      /* "Welcome Welcome Welcome"; */
       /* "Side Body Body Side"; */
     
     
@@ -100,6 +114,8 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto */
+    /* margin: auto; */
+
   }
   
   .auth {
@@ -115,6 +131,8 @@ body {
     width: 320px;
     border: 2px white solid;
     border-radius: 10px;
+    background-color: black;
+    opacity: .8;
   }
 
   button:hover {

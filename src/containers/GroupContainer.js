@@ -6,7 +6,7 @@ class GroupContainer extends Component {
 
     renderCards = () => {
         return this.props.groups.map(el => 
-            <GroupCard key={el.id} info={el} handleReceivedGroups={this.props.handleReceivedGroups}/>
+            <GroupCard key={el.id} info={el} handleReceivedGroups={this.props.handleReceivedGroups} deleteHandler={this.props.deleteHandler}/>
         )
     }
 

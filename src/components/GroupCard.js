@@ -43,6 +43,8 @@ class GroupCard extends Component {
         )
     }
 
+
+
     render() { 
         return (
             <div className="card">
@@ -92,6 +94,7 @@ class GroupCard extends Component {
                 </p>
                 
                 <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
+                <button className="deletebtn" onClick={() => {this.props.deleteHandler(this.props.info.id)}}>Delete</button>
             </div>
         );
     }
