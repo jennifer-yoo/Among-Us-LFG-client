@@ -10,6 +10,7 @@ class DashBoard extends Component {
     state = {
         groups: [],
         toggle: false,
+        join: false
     }
 
     componentDidMount() {
@@ -40,6 +41,8 @@ class DashBoard extends Component {
         );
         foundGroup.members = [...foundGroup.members, membership.user];
         this.setState({groups})
+        // this.setState((previousState) => {
+        //     return ({join: !previousState.join})})
     };
 
     logOut = () => {
@@ -73,6 +76,7 @@ class DashBoard extends Component {
         this.setState({groups: filteredGroup})
     }
 
+
     render() { 
         console.log(this.state)
         const {groups} = this.state
@@ -90,7 +94,7 @@ class DashBoard extends Component {
                 <h1>Dashboard</h1>
                 <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
                 { this.state.toggle ? <GroupForm /> : null}
-                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler} /> : null}
+                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler} joinToggle={this.state.join}/> : null}
                 <br></br>
                 <button className="logoutbutton" onClick={this.logOut}>Logout</button>
             </div>

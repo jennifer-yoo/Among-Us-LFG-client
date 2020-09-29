@@ -5,7 +5,6 @@ import DashBoard from './containers/DashBoard.js'
 import red from './images/characters/red_amongus.png'
 import blue from './images/characters/mirror_blue_amongus.png'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import GroupForm from './components/GroupForm'
 
 
 class App extends React.Component {
@@ -38,23 +37,29 @@ class App extends React.Component {
   }
 
   render() {
+
+    const { token, login, signup } = this.state
+
     return (
       <Router>
         <div className="App">
-          { this.state.token ? 
+
+          { token ? 
             <h4 className="dheader">Among Us LFG</h4> : 
             <>
               <h1 className="header">Among Us LFG</h1>
+
               <div className="firstpic">
-                <img src={red} alt="red"></img>
+                <img className="red" src={red} alt="red"></img>
               </div>
+
               <div className="secondpic">
-                <img src={blue} alt="blue"></img>
+                <img className="blue" src={blue} alt="blue"></img>
               </div>
             </>  
           }
-          { this.state.token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={this.state.login} signup={this.state.signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
-          <Route path='api/v1/groups/new' component={GroupForm} />
+          
+          { token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={login} signup={signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
         </div>
       </Router>
     );

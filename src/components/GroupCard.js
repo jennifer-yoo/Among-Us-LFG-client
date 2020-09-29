@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class GroupCard extends Component {
 
-    state = {}
+class GroupCard extends Component {
 
     joinHandler = () => {
         const userId = parseInt(localStorage.getItem('userId'))
         const token = localStorage.getItem('token')
+
         let options = {
             method: 'POST',
             headers: {
@@ -25,76 +25,105 @@ class GroupCard extends Component {
     currentMembers = () => {
         return this.props.info.members.map (el =>
             <>
-                <p>{el.username}</p> <img src={el.avatar} alt={el.discord}></img>
+                <span display="none" className="member-username"><p>{el.username}</p></span>
+                <img className="member-avatar" src={el.avatar} alt={el.discord}></img>
             </>
         )
     }
 
     getCreatorInfo = () => {
-        let username = localStorage.getItem("username")
-        let avatar = localStorage.getItem("avatar")
-        let discord = localStorage.getItem("username")
-
+        const { username, avatar, discord } = this.props.info.creator
         return (
             <div className="creator">
-                <h3>Creator: {username}</h3>
-                <img src={avatar} alt={discord}></img>
+                <p>Creator: {username}</p>
+                <span className="avatar-span"><img clasName="avatar" src={avatar} alt={discord}></img></span>
             </div>
         )
     }
 
+    buttonLogic = () => {
+        const { creator, members, id } = this.props.info
+        let currentId = parseInt(localStorage.getItem("userId"))
+        let creatorId = creator.id
+
+        if (creatorId === currentId) {
+            return <button className="deletebtn" onClick={() => {this.props.deleteHandler(id)}}>Delete</button>
+        } else if ((members.length === 9) && (members.find(member => member.id === currentId))) {
+            return (
+                <>
+                    <p><strong>Group is currently full</strong></p>
+                    <button className="leavebtn">Leave Group</button>
+                </>
+            ) 
+        } else if ((members.length === 9) && (members.find(member => member.id !== currentId))) {
+            return <p><strong>Group is currently full</strong></p>
+        } else if (this.props.checkMembership().includes(currentId)) {
+            if ((members.find(member => member.id === currentId))) {
+                return (
+                    <>
+                        <p>You are already part of this group</p>
+                        <button className="leavebtn">Leave Group</button>
+                    </>
+                )
+            } else {
+                return <p>You are already part of another group</p>
+        }} else {
+            return <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
+        }
+    }
 
 
     render() { 
+        const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members} = this.props.info
         return (
             <div className="card">
                 {this.getCreatorInfo()}
                 <div className="members">
-                    <h4>Current Members:</h4>
-                    <p>{this.props.info.members.length} / {this.props.info.playerLimit}</p>
+                    <p className="active-members">{1 + members.length} / {player_limit}</p>
                     {this.currentMembers()}
                 </div>
-                {/* <p>Map: {this.props.info.map}</p>
-                <p>Number of Imposters: {this.props.info.numOfImpos}</p>
-                <p>Confirm Eject Enabled: {this.props.info.confirmEject}</p>    
-                <p>Number of Meetings: {this.props.info.numOfMeetings}</p>    
-                <p>Emergency Cooldown: {this.props.info.emcd} seconds</p>    
-                <p>Discussion Time: {this.props.info.discussionTime} seconds</p>
-                <p>Number of Imposters: {this.props.info.numOfImpos}</p>
-                <p>Voting Time : {this.props.info.votingTime} seconds</p>    
-                <p>Player Speed: {this.props.info.playerSpeed}x</p>    
-                <p>Crew Vision: {this.props.info.crewVision}x</p>    
-                <p>Imposter Vision: {this.props.info.imposVision}x</p>    
-                <p>Kill Cooldown: {this.props.info.killCd} seconds</p>    
-                <p>Kill Distance: {this.props.info.killDistance}</p>  
-                <p>View Visual Tasks: {this.props.info.visualTask}</p>  
-                <p>Number of Common Tasks: {this.props.info.commonTask}</p>
-                <p>Number of Long Tasks: {this.props.info.longTask}</p>
-                <p>Skill Level: {this.props.info.skillLevel}</p>
-                <p>Mic Required: {this.props.info.micRequired}</p> */}
-                <p>
-                    Map: {this.props.info.map} 
-                    Number of Imposters: {this.props.info.numOfImpos} 
-                    Confirm Eject Enabled: {this.props.info.confirmEject}
-                    Number of Meetings: {this.props.info.numOfMeetings}
-                    Emergency Cooldown: {this.props.info.emcd} seconds
-                    Discussion Time: {this.props.info.discussionTime} seconds
-                    Voting Time : {this.props.info.votingTime} seconds
-                    Player Speed: {this.props.info.playerSpeed}x
-                    Crew Vision: {this.props.info.crewVision}x
-                    Imposter Vision: {this.props.info.imposVision}x
-                    Kill Cooldown: {this.props.info.killCd} seconds
-                    Kill Distance: {this.props.info.killDistance}
-                    View Visual Tasks: {this.props.info.visualTask}
-                    Number of Common Tasks: {this.props.info.commonTask}
-                    Number of Long Tasks: {this.props.info.longTask}
-                    Number of Short Tasks: {this.props.info.shortTask}
-                    Skill Level: {this.props.info.skillLevel}
-                    Mic Required: {this.props.info.micRequired}
-                </p>
+
+                <div>Skill Level: {skill_level}</div>
+
+                <div className="advanced-info">
+                    Map: {map} 
+                    <br></br>
+                    Number of Imposters: {num_of_impostors} 
+                    <br></br>
+                    Confirm Eject Enabled: {confirm_ejects ? "Yes" : "No"}
+                    <br></br>
+                    Number of Meetings: {num_of_meetings}
+                    <br></br>
+                    Emergency Cooldown: {em_cd} seconds
+                    <br></br>
+                    Discussion Time: {discussion_time} seconds
+                    <br></br>
+                    Voting Time : {voting_time} seconds
+                    <br></br>
+                    Player Speed: {player_speed}x
+                    <br></br>
+                    Crew Vision: {crew_vis}x
+                    <br></br>
+                    Imposter Vision: {impos_vision}x
+                    <br></br>
+                    Kill Cooldown: {kill_cd} seconds
+                    <br></br>
+                    Kill Distance: {kill_distance}
+                    <br></br>
+                    View Visual Tasks: {visual_tasks ? "Yes" : "No"}
+                    <br></br>
+                    Number of Common Tasks: {common_tasks}
+                    <br></br>
+                    Number of Long Tasks: {long_tasks}
+                    <br></br>
+                    Number of Short Tasks: {short_tasks}
+                    <br></br>
+                    Skill Level: {skill_level}
+                    <br></br>
+                    Mic Required: {mic_required ? "Yes" : "No"}
+                </div>
                 
-                <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
-                <button className="deletebtn" onClick={() => {this.props.deleteHandler(this.props.info.id)}}>Delete</button>
+                {this.buttonLogic()}
             </div>
         );
     }

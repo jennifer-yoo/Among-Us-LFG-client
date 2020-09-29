@@ -3,25 +3,25 @@ import React, { Component } from 'react';
 class GroupForm extends Component {
 
     state = {  
-        map: "",
-        numOfImpos: 0,
-        confirmEject: null,
-        numOfMeetings: 0,
-        emcd: 0,
+        map: "Polus",
+        numOfImpos: 1,
+        confirmEject: true,
+        numOfMeetings: 1,
+        emcd: 1,
         discussionTime: 0,
         votingTime: 0,
-        playerSpeed: 0.0,
-        crewVision: 0.0,
-        imposVision: 0.0,
-        killCd: 0,
-        killDistance: "",
-        visualTask: null,
+        playerSpeed: 0.5,
+        crewVision: 0.25,
+        imposVision: 0.25,
+        killCd: 10,
+        killDistance: "Short",
+        visualTask: true,
         commonTask: 0,
         longTask: 0,
         shortTask: 0,
-        skillLevel: "",
-        micRequired: null,
-        playerLimit: 10
+        skillLevel: "Casual",
+        micRequired: true,
+        playerLimit: 5
     }
 
     changeHandler = (event) => {
@@ -56,7 +56,7 @@ class GroupForm extends Component {
                 impos_vision: imposVision,
                 kill_cd: killCd,
                 kill_distance: killDistance,
-                visual_task: visualTask,
+                visual_tasks: visualTask,
                 common_tasks: commonTask,
                 long_tasks: longTask,
                 short_tasks: shortTask,
@@ -182,10 +182,6 @@ class GroupForm extends Component {
 
                     <label for="playerLimit">Player Limit</label>
                     <select id="playerLimit" name="playerLimit" onChange={this.changeHandler}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
                         <option value="5">5</option>
                         <option value="6">6</option>
                         <option value="7">7</option>
