@@ -50,6 +50,7 @@ body {
     margin: auto;
     display: flex;
     /* animation: bobble 2s infinite; */
+    justify-content: start;
 
     /* background-color: white; */
   }

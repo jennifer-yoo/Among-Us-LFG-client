@@ -42,15 +42,15 @@ class LogIn extends Component {
         }))
     }
 
-    testGet = () => {
-        const token = localStorage.getItem("token")
-        let options = {
-            headers: {'Authorization': `Bearer ${token}`}
-        }
-        fetch('http://localhost:3001/api/v1/users', options)
-        .then(res => res.json())
-        .then(console.log)
-    }
+    // testGet = () => {
+    //     const token = localStorage.getItem("token")
+    //     let options = {
+    //         headers: {'Authorization': `Bearer ${token}`}
+    //     }
+    //     fetch('http://localhost:3001/api/v1/users', options)
+    //     .then(res => res.json())
+    //     .then(console.log)
+    // }
     
 
     render() { 
@@ -76,7 +76,7 @@ class LogIn extends Component {
 
                     <button className="submitbtn" type="submit">Submit</button>
                 </form>
-                <button className="submitbtn" onClick={this.testGet}>Test Get from Users</button>
+                {/* <button className="submitbtn" onClick={this.testGet}>Test Get from Users</button> */}
             </div>
         );
     }
