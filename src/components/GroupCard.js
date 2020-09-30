@@ -22,6 +22,23 @@ class GroupCard extends Component {
         fetch('http://localhost:3001/api/v1/memberships', options)
     }
 
+    leaveHandler = () => {
+        const currentId = parseInt(localStorage.getItem('userId'))
+        let membership = this.props.info.memberships.find(ms => ms.user_id === currentId)
+        let membershipId = membership.id
+
+        const token = localStorage.getItem("token")
+        let options = {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        fetch(`http://localhost:3001/api/v1/memberships/${membershipId}`, options)
+    }
+
     currentMembers = () => {
         return this.props.info.members.map (el =>
             <>
@@ -36,7 +53,7 @@ class GroupCard extends Component {
         return (
             <div className="creator">
                 <p>Creator: {username}</p>
-                <span className="avatar-span"><img clasName="avatar" src={avatar} alt={discord}></img></span>
+                <span className="avatar-span"><img className="avatar" src={avatar} alt={discord}></img></span>
             </div>
         )
     }
@@ -49,25 +66,20 @@ class GroupCard extends Component {
         if (creatorId === currentId) {
             return <button className="deletebtn" onClick={() => {this.props.deleteHandler(id)}}>Delete</button>
         } else if ((members.length === 9) && (members.find(member => member.id === currentId))) {
-            return (
-                <>
-                    <p><strong>Group is currently full</strong></p>
-                    <button className="leavebtn">Leave Group</button>
-                </>
-            ) 
+            return  <>
+                <p><strong>Group is currently full</strong></p>
+                <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button> </>
         } else if ((members.length === 9) && (members.find(member => member.id !== currentId))) {
             return <p><strong>Group is currently full</strong></p>
         } else if (this.props.checkMembership().includes(currentId)) {
-            if ((members.find(member => member.id === currentId))) {
-                return (
-                    <>
-                        <p>You are already part of this group</p>
-                        <button className="leavebtn">Leave Group</button>
-                    </>
-                )
-            } else {
-                return <p>You are already part of another group</p>
-        }} else {
+            if (members.find(member => member.id === currentId)) {
+                return <>
+                    <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button>
+                    <p>You are already part of this group</p></>
+                } else {
+                    return <p>You are already part of another group</p>
+                }
+        } else {
             return <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
         }
     }
