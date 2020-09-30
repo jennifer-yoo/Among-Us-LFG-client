@@ -32,10 +32,12 @@ class DashBoard extends Component {
     }
 
     handleReceivedGroups = response => {
+        console.log("add membership:", response)
+
         const { membership } = response;
         const groups = [...this.state.groups];
         const foundGroup = groups.find(
-        group => parseInt(group.id) ===  parseInt(membership.group.id)
+        group => parseInt(group.id) ===  parseInt(membership.group_id)
         );
         foundGroup.members = [...foundGroup.members, membership.user];
         foundGroup.memberships = [...foundGroup.memberships, membership]
@@ -73,16 +75,12 @@ class DashBoard extends Component {
     }
 
     handleDeletedMembership = response => {
-        console.log("delete membership:", response)
         const { membership } = response
         const groups = [...this.state.groups];
-        let foundGroup = groups.find(group => parseInt(group.id) === parseInt(membership.group.id))
-        foundGroup.members = foundGroup.members.filter(member => member.id !== response.user_id)
-        foundGroup.memberships = foundGroup.memberships.filter(membership => membership.id !== response.id)
-        
-        this.setState({
-            groups
-        })
+        let foundGroup = groups.find(group => parseInt(group.id) === parseInt(membership.group_id))
+        foundGroup.members = foundGroup.members.filter(member => member.id !== membership.user_id)
+        foundGroup.memberships = foundGroup.memberships.filter(ms => ms.id !== membership.id)
+        this.setState({ groups })
     }
 
 
@@ -92,19 +90,23 @@ class DashBoard extends Component {
         return (
             <div className="dashboard">
                 <ActionCableConsumer
+                    key={"allGroups"}
                     channel={{channel: 'GroupsChannel' }}
                     onReceived={this.updateGroups} />
                 <ActionCableConsumer 
+                    key={"addMember"}
                     channel={ {channel: 'GroupChannel'} }
                     onReceived={this.handleReceivedGroups}/>
                 <ActionCableConsumer 
+                    key={"deleteGroup"}
                     channel={ {channel: 'DeleteChannel'} }
                     onReceived={this.handleDeletedGroup}/>
                 <ActionCableConsumer 
+                    key={"removeMember"}
                     channel={ {channel: 'MembershipsChannel'} }
                     onReceived={this.handleDeletedMembership}/>
                 <h1>Dashboard</h1>
-                <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
+                <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button>
                 {this.state.toggle ? <GroupForm /> : null}
                 {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler}/> : null}
                 <br></br>

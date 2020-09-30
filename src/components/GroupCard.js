@@ -43,8 +43,10 @@ class GroupCard extends Component {
     currentMembers = () => {
         return this.props.info.members.map (el =>
             <>
-                <span display="none" className="member-username"><p>{el.username}</p></span>
-                <img className="member-avatar" src={el.avatar} alt={el.discord}></img>
+                {/* <span display="none" className="member-username"><p>{el.username}</p></span> */}
+                <div className="member-avatar-container">
+                    <img className="member-avatar" src={el.avatar} alt={el.discord}></img>
+                </div>
             </>
         )
     }
@@ -53,8 +55,10 @@ class GroupCard extends Component {
         const { username, avatar, discord } = this.props.info.creator
         return (
             <div className="creator">
-                <p>Creator: {username}</p>
-                <span className="avatar-span"><img className="avatar" src={avatar} alt={discord}></img></span>
+                {/* <p>Creator: {username}</p> */}
+                <div className="creator-avatar-container">
+                    <img className="creator-avatar" src={avatar} alt={discord}></img>
+                </div>
             </div>
         )
     }
@@ -64,8 +68,12 @@ class GroupCard extends Component {
         let currentId = parseInt(localStorage.getItem("userId"))
         let creatorId = creator.id
 
-        if (creatorId === currentId) {
-            return <button className="deletebtn" onClick={() => {this.props.deleteHandler(id)}}>Delete</button>
+        if (this.props.checkCreator().includes(currentId)) {
+            if (currentId === creatorId) {
+                return <button className="deletebtn" onClick={() => {this.props.deleteHandler(id)}}>Delete</button>
+            } else {
+                return <p>You have already created a group and can only be a member of one group</p> 
+            }
         } else if ((members.length === 9) && (members.find(member => member.id === currentId))) {
             return  <>
                 <p><strong>Group is currently full</strong></p>
@@ -85,6 +93,15 @@ class GroupCard extends Component {
         }
     }
 
+    skillCss = () => {
+        if (this.props.info.skill_level === "Casual") {
+            return <div className="skill-green"></div>
+        } else if (this.props.info.skill_level === "Intermediate") {
+            return <div className="skill-yellow"></div>
+        } else {
+            return <div className="skill-red"></div>
+        }
+    }
 
     render() { 
         console.log(this.props.info.memberships)
@@ -92,14 +109,17 @@ class GroupCard extends Component {
         return (
             <div className="card">
                 {this.getCreatorInfo()}
-                <div className="members">
-                    <p className="active-members">{1 + members.length} / {player_limit}</p>
+                <div className="group-members">
                     {this.currentMembers()}
                 </div>
 
-                <div>Skill Level: {skill_level}</div>
+                <div className="skill-level">{this.skillCss()} {skill_level}</div>
 
-                <div className="advanced-info">
+                {/* <div> </div> */}
+
+                {/* <div className="advanced-info"> */}
+                    {/* <p className="active-members">{1 + members.length} / {player_limit}</p>
+
                     Map: {map} 
                     <br></br>
                     Number of Imposters: {num_of_impostors} 
@@ -135,7 +155,7 @@ class GroupCard extends Component {
                     Skill Level: {skill_level}
                     <br></br>
                     Mic Required: {mic_required ? "Yes" : "No"}
-                </div>
+                </div> */}
                 
                 {this.buttonLogic()}
             </div>

@@ -43,23 +43,17 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
+          <h1 className="header">Among Us LFG</h1>
+            { token ? 
+              <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> :
+              <div className="landing-pg"> 
+                  <img className="pic" src={red} alt="red"></img>
 
-          { token ? 
-            <h4 className="dheader">Among Us LFG</h4> : 
-            <>
-              <h1 className="header">Among Us LFG</h1>
-
-              <div className="firstpic">
-                <img className="red" src={red} alt="red"></img>
-              </div>
-
-              <div className="secondpic">
-                <img className="blue" src={blue} alt="blue"></img>
-              </div>
-            </>  
-          }
-          
-          { token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={login} signup={signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
+                  <Auth login={login} signup={signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>
+                  
+                  <img className="pic" src={blue} alt="blue"></img>
+              </div> 
+            }
         </div>
       </Router>
     );
@@ -67,3 +61,5 @@ class App extends React.Component {
 }
 
 export default App;
+
+

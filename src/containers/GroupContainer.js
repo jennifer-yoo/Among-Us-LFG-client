@@ -13,13 +13,25 @@ class GroupContainer extends Component {
         return idArray
     }
 
+    checkCreator = () => {
+        let allGroups = this.props.groups
+        let idArray = []
+
+        allGroups.forEach(group => {
+            idArray.push(group.creator_id)
+        })
+
+        return idArray
+    }
+
     renderCards = () => {
         return this.props.groups.map(el => 
-            <GroupCard key={el.id} info={el} handleReceivedGroups={this.props.handleReceivedGroups} deleteHandler={this.props.deleteHandler} checkMembership={this.checkMembership}/>
+            <GroupCard key={el.id} info={el} handleReceivedGroups={this.props.handleReceivedGroups} deleteHandler={this.props.deleteHandler} checkMembership={this.checkMembership} checkCreator={this.checkCreator}/>
         )
     }
 
     render() { 
+        console.log("in group container pprops:", this.props.groups)
         return ( 
             <div className="group-container">
                 {this.renderCards()}
