@@ -25,6 +25,7 @@ class GroupCard extends Component {
     leaveHandler = () => {
         const currentId = parseInt(localStorage.getItem('userId'))
         let membership = this.props.info.memberships.find(ms => ms.user_id === currentId)
+        console.log("memberships:", this.props.info.memberships)
         let membershipId = membership.id
 
         const token = localStorage.getItem("token")
@@ -86,6 +87,7 @@ class GroupCard extends Component {
 
 
     render() { 
+        console.log(this.props.info.memberships)
         const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members} = this.props.info
         return (
             <div className="card">

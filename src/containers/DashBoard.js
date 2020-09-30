@@ -32,13 +32,13 @@ class DashBoard extends Component {
     }
 
     handleReceivedGroups = response => {
-        console.log("response:", response)
         const { membership } = response;
         const groups = [...this.state.groups];
         const foundGroup = groups.find(
         group => parseInt(group.id) ===  parseInt(membership.group.id)
         );
         foundGroup.members = [...foundGroup.members, membership.user];
+        foundGroup.memberships = [...foundGroup.memberships, membership]
         this.setState({groups})
     };
 
@@ -72,6 +72,19 @@ class DashBoard extends Component {
         this.setState({groups: filteredGroup})
     }
 
+    handleDeletedMembership = response => {
+        console.log("delete membership:", response)
+        const { membership } = response
+        const groups = [...this.state.groups];
+        let foundGroup = groups.find(group => parseInt(group.id) === parseInt(membership.group.id))
+        foundGroup.members = foundGroup.members.filter(member => member.id !== response.user_id)
+        foundGroup.memberships = foundGroup.memberships.filter(membership => membership.id !== response.id)
+        
+        this.setState({
+            groups
+        })
+    }
+
 
     render() { 
         console.log(this.state)
@@ -87,6 +100,9 @@ class DashBoard extends Component {
                 <ActionCableConsumer 
                     channel={ {channel: 'DeleteChannel'} }
                     onReceived={this.handleDeletedGroup}/>
+                <ActionCableConsumer 
+                    channel={ {channel: 'MembershipsChannel'} }
+                    onReceived={this.handleDeletedMembership}/>
                 <h1>Dashboard</h1>
                 <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
                 {this.state.toggle ? <GroupForm /> : null}
