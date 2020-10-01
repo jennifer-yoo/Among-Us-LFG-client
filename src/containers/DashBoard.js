@@ -4,6 +4,8 @@ import { ActionCableConsumer } from 'react-actioncable-provider'
 import '../DashBoard.css'
 import { Link } from 'react-router-dom';
 import CreatorPanelContainer from './CreatorPanelContainer'
+// import { ReactCSSTransitionGroup } from 'react-transition-group'; // ES6
+
 
 class DashBoard extends Component {
     state = {
