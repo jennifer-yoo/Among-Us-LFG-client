@@ -136,12 +136,12 @@ body {
 }
 
 button:hover {
-  opacity: 1.0;
+  color: #29de1e;
+  border-color: #29de1e;
 }
 
 button {
-  background-color: transparent;
-  opacity: .7;
+  background-color: black;
   color: white;
   font-size: 80px;
   border-radius: 10px;

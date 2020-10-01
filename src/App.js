@@ -36,6 +36,11 @@ class App extends React.Component {
     this.setState(() => ({[e.target.name]: !this.state[e.target.name]}))
   }
 
+  logOut = () => {
+    localStorage.clear()
+    this.setToken(this.checkForLogin())
+  }
+
   render() {
 
     const { token, login, signup } = this.state
@@ -54,6 +59,7 @@ class App extends React.Component {
                   <img className="pic" src={blue} alt="blue"></img>
               </div> 
             }
+            { this.checkForLogin() ? <button className="logoutbutton" onClick={this.logOut}>Logout</button> : null}
         </div>
       </Router>
     );

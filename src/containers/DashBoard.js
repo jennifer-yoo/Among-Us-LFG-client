@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import GroupContainer from './GroupContainer.js'
 import { ActionCableConsumer } from 'react-actioncable-provider'
-import GroupForm from '../components/GroupForm'
 import '../DashBoard.css'
 import { Link } from 'react-router-dom';
-
+import CreatorPanelContainer from './CreatorPanelContainer'
 
 class DashBoard extends Component {
     state = {
         groups: [],
-        toggle: false,
     }
 
     componentDidMount() {
@@ -44,14 +42,7 @@ class DashBoard extends Component {
         this.setState({groups})
     };
 
-    logOut = () => {
-        localStorage.clear()
-        this.props.setToken(this.props.checkLogin())
-    }
 
-    toggleHandler = () => {
-        this.setState((previousState) => ({toggle: !previousState.toggle}))
-    }
 
     deleteHandler = (id) => {
         const token = localStorage.getItem("token")
@@ -83,9 +74,15 @@ class DashBoard extends Component {
         this.setState({ groups })
     }
 
+    checkIfCreator = () => {
+        const currentId = parseInt(localStorage.getItem("userId"))
+        let groups = [...this.state.groups]
+        let foundGroup = groups.find(group => group.creator_id == currentId)
+        return foundGroup
+    }
 
     render() { 
-        console.log(this.state)
+        console.log("checking if creator:", this.checkIfCreator())
         const {groups} = this.state
         return (
             <div className="dashboard">
@@ -105,12 +102,10 @@ class DashBoard extends Component {
                     key={"removeMember"}
                     channel={ {channel: 'MembershipsChannel'} }
                     onReceived={this.handleDeletedMembership}/>
-                <h1>Dashboard</h1>
-                <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button>
-                {this.state.toggle ? <GroupForm /> : null}
+                {/* <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button> */}
+                {/* {this.state.toggle ? <GroupForm /> : null} */}
                 {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler}/> : null}
-                <br></br>
-                <button className="logoutbutton" onClick={this.logOut}>Logout</button>
+                {this.checkIfCreator() ? <CreatorPanelContainer myGroup={this.checkIfCreator()}/> : null }
             </div>
         );
     }

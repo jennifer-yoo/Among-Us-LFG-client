@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import GroupCard from '../components/GroupCard'
+import GroupForm from '../components/GroupForm'
+
 
 class GroupContainer extends Component {
+
+    state = {
+        toggle: false
+    }
+
+    toggleHandler = () => {
+        this.setState((previousState) => ({toggle: !previousState.toggle}))
+    }
 
     checkMembership = () => {
         let allGroups = this.props.groups
@@ -34,6 +44,8 @@ class GroupContainer extends Component {
         console.log("in group container pprops:", this.props.groups)
         return ( 
             <div className="group-container">
+                <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button>
+                {this.state.toggle ? <GroupForm /> : null}
                 {this.renderCards()}
             </div>
         );

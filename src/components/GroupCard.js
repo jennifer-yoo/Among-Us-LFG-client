@@ -82,9 +82,7 @@ class GroupCard extends Component {
             return <p><strong>Group is currently full</strong></p>
         } else if (this.props.checkMembership().includes(currentId)) {
             if (members.find(member => member.id === currentId)) {
-                return <>
-                    <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button>
-                    <p>You are already part of this group</p></>
+                return <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button>
                 } else {
                     return <p>You are already part of another group</p>
                 }
@@ -96,15 +94,15 @@ class GroupCard extends Component {
     skillCss = () => {
         if (this.props.info.skill_level === "Casual") {
             return <div className="skill-green"></div>
-        } else if (this.props.info.skill_level === "Intermediate") {
+        } else if (this.props.info.skill_level === "intermediate") {
             return <div className="skill-yellow"></div>
-        } else {
+        } else if (this.props.info.skill_level === "expert")  {
             return <div className="skill-red"></div>
         }
     }
 
     render() { 
-        console.log(this.props.info.memberships)
+        console.log("skill leevl", this.props.info.skill_level)
         const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members} = this.props.info
         return (
             <div className="card">
@@ -115,7 +113,39 @@ class GroupCard extends Component {
 
                 <div className="skill-level">{this.skillCss()} {skill_level}</div>
 
-                {/* <div> </div> */}
+                <div className="main-group-info">
+                    <p className="main-map">Map: {map} </p>
+                    <p className="main-impos">Number of Imposters: {num_of_impostors} </p>
+                    <p className="main-mic">Mic Required: {mic_required ? "Yes" : "No"}</p>
+                </div>
+
+                <div className="basic-group-info"> 
+                    <div className="basic-info">
+                        <p>Confirm Eject Enabled: {confirm_ejects ? "Yes" : "No"}</p>
+                        <p>Number of Meetings: {num_of_meetings}</p>
+                        <p>Emergency Cooldown: {em_cd} seconds</p>
+                    </div>
+                    
+                    <div className="basic-info">
+                        <p>Discussion Time: {discussion_time} seconds</p>
+                        <p>Voting Time : {voting_time} seconds</p>
+                        <p>Player Speed: {player_speed}x</p>
+                    </div>
+                    
+                    <div className="basic-info">
+                        <p>Crew Vision: {crew_vis}x</p>
+                        <p>Imposter Vision: {impos_vision}x</p>
+                        <p>Kill Cooldown: {kill_cd} seconds</p>
+                        <p>Kill Distance: {kill_distance}</p>
+                    </div>
+
+                    <div className="basic-info">
+                        <p>View Visual Tasks: {visual_tasks ? "Yes" : "No"}</p>
+                        <p>Number of Common Tasks: {common_tasks}</p>
+                        <p>Number of Long Tasks: {long_tasks}</p>
+                        <p>Number of Short Tasks: {short_tasks}</p>  
+                    </div>
+                </div>
 
                 {/* <div className="advanced-info"> */}
                     {/* <p className="active-members">{1 + members.length} / {player_limit}</p>
