@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class GroupCard extends Component {
 
-    state = {}
+class GroupCard extends Component {
 
     joinHandler = () => {
         const userId = parseInt(localStorage.getItem('userId'))
         const token = localStorage.getItem('token')
+
         let options = {
             method: 'POST',
             headers: {
@@ -22,76 +22,172 @@ class GroupCard extends Component {
         fetch('http://localhost:3001/api/v1/memberships', options)
     }
 
+    leaveHandler = () => {
+        const currentId = parseInt(localStorage.getItem('userId'))
+        let membership = this.props.info.memberships.find(ms => ms.user_id === currentId)
+        console.log("memberships:", this.props.info.memberships)
+        let membershipId = membership.id
+
+        const token = localStorage.getItem("token")
+        let options = {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        fetch(`http://localhost:3001/api/v1/memberships/${membershipId}`, options)
+    }
+
     currentMembers = () => {
         return this.props.info.members.map (el =>
             <>
-                <p>{el.username}</p> <img src={el.avatar} alt={el.discord}></img>
+                {/* <span display="none" className="member-username"><p>{el.username}</p></span> */}
+                <div className="member-avatar-container">
+                    <img className="member-avatar" src={el.avatar} alt={el.discord}></img>
+                </div>
             </>
         )
     }
 
     getCreatorInfo = () => {
-        let username = localStorage.getItem("username")
-        let avatar = localStorage.getItem("avatar")
-        let discord = localStorage.getItem("username")
-
+        const { username, avatar, discord } = this.props.info.creator
         return (
             <div className="creator">
-                <h3>Creator: {username}</h3>
-                <img src={avatar} alt={discord}></img>
+                {/* <p>Creator: {username}</p> */}
+                <div className="creator-avatar-container">
+                    <img className="creator-avatar" src={avatar} alt={discord}></img>
+                </div>
             </div>
         )
     }
 
+    buttonLogic = () => {
+        const { creator, members, id } = this.props.info
+        let currentId = parseInt(localStorage.getItem("userId"))
+        let creatorId = creator.id
+
+        if (this.props.checkCreator().includes(currentId)) {
+            if (currentId === creatorId) {
+                return <button className="deletebtn" onClick={() => {this.props.deleteHandler(id)}}>Delete</button>
+            } else {
+                return <p>You have already created a group and can only be a member of one group</p> 
+            }
+        } else if ((members.length === 9) && (members.find(member => member.id === currentId))) {
+            return  <>
+                <p><strong>Group is currently full</strong></p>
+                <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button> </>
+        } else if ((members.length === 9) && (members.find(member => member.id !== currentId))) {
+            return <p><strong>Group is currently full</strong></p>
+        } else if (this.props.checkMembership().includes(currentId)) {
+            if (members.find(member => member.id === currentId)) {
+                return <button className="leavebtn" onClick={this.leaveHandler}>Leave Group</button>
+                } else {
+                    return <p>You are already part of another group</p>
+                }
+        } else {
+            return <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
+        }
+    }
+
+    skillCss = () => {
+        if (this.props.info.skill_level === "Casual") {
+            return <div className="skill-green"></div>
+        } else if (this.props.info.skill_level === "intermediate") {
+            return <div className="skill-yellow"></div>
+        } else if (this.props.info.skill_level === "expert")  {
+            return <div className="skill-red"></div>
+        }
+    }
+
     render() { 
+        console.log("skill leevl", this.props.info.skill_level)
+        const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members} = this.props.info
         return (
             <div className="card">
                 {this.getCreatorInfo()}
-                <div className="members">
-                    <h4>Current Members:</h4>
-                    <p>{this.props.info.members.length} / {this.props.info.playerLimit}</p>
+                <div className="group-members">
                     {this.currentMembers()}
                 </div>
-                {/* <p>Map: {this.props.info.map}</p>
-                <p>Number of Imposters: {this.props.info.numOfImpos}</p>
-                <p>Confirm Eject Enabled: {this.props.info.confirmEject}</p>    
-                <p>Number of Meetings: {this.props.info.numOfMeetings}</p>    
-                <p>Emergency Cooldown: {this.props.info.emcd} seconds</p>    
-                <p>Discussion Time: {this.props.info.discussionTime} seconds</p>
-                <p>Number of Imposters: {this.props.info.numOfImpos}</p>
-                <p>Voting Time : {this.props.info.votingTime} seconds</p>    
-                <p>Player Speed: {this.props.info.playerSpeed}x</p>    
-                <p>Crew Vision: {this.props.info.crewVision}x</p>    
-                <p>Imposter Vision: {this.props.info.imposVision}x</p>    
-                <p>Kill Cooldown: {this.props.info.killCd} seconds</p>    
-                <p>Kill Distance: {this.props.info.killDistance}</p>  
-                <p>View Visual Tasks: {this.props.info.visualTask}</p>  
-                <p>Number of Common Tasks: {this.props.info.commonTask}</p>
-                <p>Number of Long Tasks: {this.props.info.longTask}</p>
-                <p>Skill Level: {this.props.info.skillLevel}</p>
-                <p>Mic Required: {this.props.info.micRequired}</p> */}
-                <p>
-                    Map: {this.props.info.map} 
-                    Number of Imposters: {this.props.info.numOfImpos} 
-                    Confirm Eject Enabled: {this.props.info.confirmEject}
-                    Number of Meetings: {this.props.info.numOfMeetings}
-                    Emergency Cooldown: {this.props.info.emcd} seconds
-                    Discussion Time: {this.props.info.discussionTime} seconds
-                    Voting Time : {this.props.info.votingTime} seconds
-                    Player Speed: {this.props.info.playerSpeed}x
-                    Crew Vision: {this.props.info.crewVision}x
-                    Imposter Vision: {this.props.info.imposVision}x
-                    Kill Cooldown: {this.props.info.killCd} seconds
-                    Kill Distance: {this.props.info.killDistance}
-                    View Visual Tasks: {this.props.info.visualTask}
-                    Number of Common Tasks: {this.props.info.commonTask}
-                    Number of Long Tasks: {this.props.info.longTask}
-                    Number of Short Tasks: {this.props.info.shortTask}
-                    Skill Level: {this.props.info.skillLevel}
-                    Mic Required: {this.props.info.micRequired}
-                </p>
+
+                <div className="skill-level">{this.skillCss()} {skill_level}</div>
+
+                <div className="main-group-info">
+                    <p className="main-map">Map: {map} </p>
+                    <p className="main-impos">Number of Imposters: {num_of_impostors} </p>
+                    <p className="main-mic">Mic Required: {mic_required ? "Yes" : "No"}</p>
+                </div>
+
+                <div className="basic-group-info"> 
+                    <div className="basic-info">
+                        <p>Confirm Eject Enabled: {confirm_ejects ? "Yes" : "No"}</p>
+                        <p>Number of Meetings: {num_of_meetings}</p>
+                        <p>Emergency Cooldown: {em_cd} seconds</p>
+                    </div>
+                    
+                    <div className="basic-info">
+                        <p>Discussion Time: {discussion_time} seconds</p>
+                        <p>Voting Time : {voting_time} seconds</p>
+                        <p>Player Speed: {player_speed}x</p>
+                    </div>
+                    
+                    <div className="basic-info">
+                        <p>Crew Vision: {crew_vis}x</p>
+                        <p>Imposter Vision: {impos_vision}x</p>
+                        <p>Kill Cooldown: {kill_cd} seconds</p>
+                        <p>Kill Distance: {kill_distance}</p>
+                    </div>
+
+                    <div className="basic-info">
+                        <p>View Visual Tasks: {visual_tasks ? "Yes" : "No"}</p>
+                        <p>Number of Common Tasks: {common_tasks}</p>
+                        <p>Number of Long Tasks: {long_tasks}</p>
+                        <p>Number of Short Tasks: {short_tasks}</p>  
+                    </div>
+                </div>
+
+                {/* <div className="advanced-info"> */}
+                    {/* <p className="active-members">{1 + members.length} / {player_limit}</p>
+
+                    Map: {map} 
+                    <br></br>
+                    Number of Imposters: {num_of_impostors} 
+                    <br></br>
+                    Confirm Eject Enabled: {confirm_ejects ? "Yes" : "No"}
+                    <br></br>
+                    Number of Meetings: {num_of_meetings}
+                    <br></br>
+                    Emergency Cooldown: {em_cd} seconds
+                    <br></br>
+                    Discussion Time: {discussion_time} seconds
+                    <br></br>
+                    Voting Time : {voting_time} seconds
+                    <br></br>
+                    Player Speed: {player_speed}x
+                    <br></br>
+                    Crew Vision: {crew_vis}x
+                    <br></br>
+                    Imposter Vision: {impos_vision}x
+                    <br></br>
+                    Kill Cooldown: {kill_cd} seconds
+                    <br></br>
+                    Kill Distance: {kill_distance}
+                    <br></br>
+                    View Visual Tasks: {visual_tasks ? "Yes" : "No"}
+                    <br></br>
+                    Number of Common Tasks: {common_tasks}
+                    <br></br>
+                    Number of Long Tasks: {long_tasks}
+                    <br></br>
+                    Number of Short Tasks: {short_tasks}
+                    <br></br>
+                    Skill Level: {skill_level}
+                    <br></br>
+                    Mic Required: {mic_required ? "Yes" : "No"}
+                </div> */}
                 
-                <button className="joinbtn" onClick={this.joinHandler}>Join Button</button>
+                {this.buttonLogic()}
             </div>
         );
     }

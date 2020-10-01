@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 
 class LogIn extends Component {
+
     state = {
         username: "",
         password: ""
@@ -25,7 +26,6 @@ class LogIn extends Component {
         fetch('http://localhost:3001/api/v1/login', options)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             localStorage.setItem("token", data.jwt)
             localStorage.setItem("userId", data.user.id)
             localStorage.setItem("username", data.user.username)
@@ -41,23 +41,12 @@ class LogIn extends Component {
             [event.target.name]: event.target.value
         }))
     }
-
-    // testGet = () => {
-    //     const token = localStorage.getItem("token")
-    //     let options = {
-    //         headers: {'Authorization': `Bearer ${token}`}
-    //     }
-    //     fetch('http://localhost:3001/api/v1/users', options)
-    //     .then(res => res.json())
-    //     .then(console.log)
-    // }
     
-
     render() { 
         const {username, password} = this.state
         return (
-            <div className="loginform">
-                <form onSubmit={this.handleSubmit}>
+            <div className="login-container">
+                <form className="login-form" onSubmit={this.handleSubmit}>
                     <input 
                     type="text" 
                     name="username" 
@@ -76,7 +65,6 @@ class LogIn extends Component {
 
                     <button className="submitbtn" type="submit">Submit</button>
                 </form>
-                {/* <button className="submitbtn" onClick={this.testGet}>Test Get from Users</button> */}
             </div>
         );
     }

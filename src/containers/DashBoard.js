@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import GroupContainer from './GroupContainer.js'
 import { ActionCableConsumer } from 'react-actioncable-provider'
-import GroupForm from '../components/GroupForm'
 import '../DashBoard.css'
 import { Link } from 'react-router-dom';
-
+import CreatorPanelContainer from './CreatorPanelContainer'
 
 class DashBoard extends Component {
     state = {
         groups: [],
-        toggle: false,
     }
 
     componentDidMount() {
@@ -32,42 +30,82 @@ class DashBoard extends Component {
     }
 
     handleReceivedGroups = response => {
-        console.log("response:", response)
+        console.log("add membership:", response)
+
         const { membership } = response;
         const groups = [...this.state.groups];
         const foundGroup = groups.find(
-        group => parseInt(group.id) ===  parseInt(membership.group.id)
+        group => parseInt(group.id) ===  parseInt(membership.group_id)
         );
         foundGroup.members = [...foundGroup.members, membership.user];
+        foundGroup.memberships = [...foundGroup.memberships, membership]
         this.setState({groups})
     };
 
-    logOut = () => {
-        localStorage.clear()
-        this.props.setToken(this.props.checkLogin())
+
+
+    deleteHandler = (id) => {
+        const token = localStorage.getItem("token")
+        let options = {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'content-type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        fetch(`http://localhost:3001/api/v1/groups/${id}`, options)
     }
 
-    toggleHandler = () => {
-        this.setState((previousState) => ({toggle: !previousState.toggle}))
+    handleDeletedGroup = response => {
+        const { group } = response
+        const filteredGroup = [...this.state.groups].filter(
+            el => parseInt(el.id) !==  parseInt(group.id)
+            );
+        this.setState({groups: filteredGroup})
+    }
+
+    handleDeletedMembership = response => {
+        const { membership } = response
+        const groups = [...this.state.groups];
+        let foundGroup = groups.find(group => parseInt(group.id) === parseInt(membership.group_id))
+        foundGroup.members = foundGroup.members.filter(member => member.id !== membership.user_id)
+        foundGroup.memberships = foundGroup.memberships.filter(ms => ms.id !== membership.id)
+        this.setState({ groups })
+    }
+
+    checkIfCreator = () => {
+        const currentId = parseInt(localStorage.getItem("userId"))
+        let groups = [...this.state.groups]
+        let foundGroup = groups.find(group => group.creator_id == currentId)
+        return foundGroup
     }
 
     render() { 
-        console.log(this.state)
+        console.log("checking if creator:", this.checkIfCreator())
         const {groups} = this.state
         return (
             <div className="dashboard">
                 <ActionCableConsumer
+                    key={"allGroups"}
                     channel={{channel: 'GroupsChannel' }}
                     onReceived={this.updateGroups} />
                 <ActionCableConsumer 
+                    key={"addMember"}
                     channel={ {channel: 'GroupChannel'} }
                     onReceived={this.handleReceivedGroups}/>
-                <h1>Dashboard</h1>
-                <button className="submitbtn" toggle={this.state.toggle} onClick={this.toggleHandler}>Create a New Group</button>
-                { this.state.toggle ? <GroupForm /> : null}
-                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} /> : null}
-                <br></br>
-                <button className="logoutbutton" onClick={this.logOut}>Logout</button>
+                <ActionCableConsumer 
+                    key={"deleteGroup"}
+                    channel={ {channel: 'DeleteChannel'} }
+                    onReceived={this.handleDeletedGroup}/>
+                <ActionCableConsumer 
+                    key={"removeMember"}
+                    channel={ {channel: 'MembershipsChannel'} }
+                    onReceived={this.handleDeletedMembership}/>
+                {/* <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button> */}
+                {/* {this.state.toggle ? <GroupForm /> : null} */}
+                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler}/> : null}
+                {this.checkIfCreator() ? <CreatorPanelContainer myGroup={this.checkIfCreator()}/> : null }
             </div>
         );
     }

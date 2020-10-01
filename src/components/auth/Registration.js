@@ -7,15 +7,11 @@ class Registration extends Component {
         password: "",
         discord: "",
         avatar: "",
-        errors: "",
+        errors: "", // CATCH ERRORS WHEN SIGNING UP IN OUR HANDLE SUBMIT
     }
 
     handleSubmit = (event) => {
         const {username, password, discord, avatar} = this.state
-
-        // if (avatar === "") {
-        //     this.setState({avatar: "https://lh3.googleusercontent.com/VHB9bVB8cTcnqwnu0nJqKYbiutRclnbGxTpwnayKB4vMxZj8pk1220Rg-6oQ68DwAkqO=s360-rw"})
-        // }
 
         event.persist()
         event.preventDefault()
@@ -29,13 +25,19 @@ class Registration extends Component {
                 username: username,
                 password: password,
                 discord: discord,
-                avatar: avatar
+                avatar: `${ avatar === "" ? "https://img.icons8.com/ultraviolet/40/000000/among-us.png" : avatar }`
             })
         }
         fetch('http://localhost:3001/api/v1/users', options)
         .then(res => res.json())
-        .then(console.log)
-        this.props.setToken(this.props.checkToken())
+        .then(data => {
+            localStorage.setItem("token", data.jwt)
+            localStorage.setItem("userId", data.user.id)
+            localStorage.setItem("username", data.user.username)
+            localStorage.setItem("avatar", data.user.avatar)
+            localStorage.setItem("discord", data.user.discord)
+            this.props.setToken(this.props.checkToken())
+        })
     }
 
     handleChange = (event) => {
@@ -48,8 +50,8 @@ class Registration extends Component {
     render() {
         const {username, password, discord, avatar} = this.state
         return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
+            <div className="signup-container">
+                <form className="signup-form" onSubmit={this.handleSubmit}>
                     <input 
                     type="text" 
                     name="username" 

@@ -5,7 +5,6 @@ import DashBoard from './containers/DashBoard.js'
 import red from './images/characters/red_amongus.png'
 import blue from './images/characters/mirror_blue_amongus.png'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import GroupForm from './components/GroupForm'
 
 
 class App extends React.Component {
@@ -37,28 +36,30 @@ class App extends React.Component {
     this.setState(() => ({[e.target.name]: !this.state[e.target.name]}))
   }
 
+  logOut = () => {
+    localStorage.clear()
+    this.setToken(this.checkForLogin())
+  }
+
   render() {
+
+    const { token, login, signup } = this.state
+
     return (
       <Router>
         <div className="App">
-          { this.state.token ? 
-            <h4 className="dheader">Among Us LFG</h4> : 
-            <>
-              <h1 className="header">Among Us LFG</h1>
+          <h1 className="header">Among Us LFG</h1>
+            { token ? 
+              <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> :
+              <div className="landing-pg"> 
+                  <img className="pic" src={red} alt="red"></img>
 
-              <div className="firstpic">
-                <img src={red} alt="red"></img>
-              </div>
-
-              <div className="secondpic">
-                <img src={blue} alt="blue"></img>
-              </div>
-            </>  
-          }
-
-          
-          { this.state.token ? <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> : <Auth login={this.state.login} signup={this.state.signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>}
-          <Route path='api/v1/groups/new' component={GroupForm} />
+                  <Auth login={login} signup={signup} clickHandler={this.clickHandler} checkLogin={this.checkForLogin} setToken={this.setToken}/>
+                  
+                  <img className="pic" src={blue} alt="blue"></img>
+              </div> 
+            }
+            { this.checkForLogin() ? <button className="logoutbutton" onClick={this.logOut}>Logout</button> : null}
         </div>
       </Router>
     );
@@ -66,3 +67,5 @@ class App extends React.Component {
 }
 
 export default App;
+
+
