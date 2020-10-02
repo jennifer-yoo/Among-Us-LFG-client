@@ -103,7 +103,7 @@ class GroupCard extends Component {
 
     render() { 
         console.log("skill leevl", this.props.info.skill_level)
-        const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members} = this.props.info
+        const { map, num_of_impostors, confirm_ejects, num_of_meetings, em_cd, discussion_time, voting_time, player_speed, crew_vis, impos_vision, kill_cd, kill_distance, visual_tasks, common_tasks, long_tasks, short_tasks, skill_level, mic_required, player_limit, members, game_code} = this.props.info
         return (
             <div className="card">
                 {this.getCreatorInfo()}
@@ -114,9 +114,14 @@ class GroupCard extends Component {
                 <div className="skill-level">{this.skillCss()} {skill_level}</div>
 
                 <div className="main-group-info">
-                    <p className="main-map">Map: {map} </p>
-                    <p className="main-impos">Number of Imposters: {num_of_impostors} </p>
-                    <p className="main-mic">Mic Required: {mic_required ? "Yes" : "No"}</p>
+                    <div className="inside-main">
+                        <p className="main-map">Map: {map} </p>
+                        <p className="main-impos">Number of Imposters: {num_of_impostors} </p>
+                    </div>
+                    <div className="inside-main">
+                        <p className="main-mic">Mic Required: {mic_required ? "Yes" : "No"}</p>
+                        <p className="main-code">Game Code: {game_code}</p>
+                    </div>
                 </div>
 
                 <div className="basic-group-info"> 

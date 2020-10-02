@@ -50,6 +50,21 @@ body {
   
 }
 
+.logo-container {
+  z-index: 3;
+  /* background-color: white; */
+  display: flex;
+  position: relative;
+  height: 300px;
+}
+
+.logo {
+  border-radius: 50%;
+  justify-items: left;
+  position: absolute;
+  top: 20%;
+}
+
 .landing-pg {
   display: flex;
   justify-content: center;
@@ -58,15 +73,19 @@ body {
 .header {
   font-size: 120px;
   text-align: center;
-  grid-area: Header;
   background-color: transparent;
   /* border-bottom: 5px solid white; */
   /* border-top: 5px solid white; */
   color: white;
   letter-spacing: 5px;
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
+  justify-self: center; */
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 10px 10px;
   /* background-color: white */
 }
@@ -138,6 +157,7 @@ body {
 button:hover {
   color: #29de1e;
   border-color: #29de1e;
+  transition-timing-function: ease-in;   
 }
 
 button {
@@ -148,6 +168,9 @@ button {
   padding: 8px 8px;
   border: 5px solid white;
   font-family: 'myWebFont';
+  transition-property: border, color;
+  transition-duration: .20s, .20s;
+  transition-timing-function: ease-in, ease-in;
 }
 
 button.login {
@@ -166,9 +189,9 @@ button.signup {
   margin: 2px 2px;
 }
 
-.submitbtn {
-  margin: auto;
-  font-size: 40px;
+.signin-btn {
+  margin-top: 10px;
+  font-size: 50px;
 }
 
 .loginform {

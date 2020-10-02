@@ -4,10 +4,15 @@ import { ActionCableConsumer } from 'react-actioncable-provider'
 import '../DashBoard.css'
 import { Link } from 'react-router-dom';
 import CreatorPanelContainer from './CreatorPanelContainer'
+import GroupFilter from '../components/GroupFilter'
 
 class DashBoard extends Component {
     state = {
         groups: [],
+        toggleEject: false,
+        map: "",
+        skillLevel: "",
+        micRequired: null
     }
 
     componentDidMount() {
@@ -41,8 +46,6 @@ class DashBoard extends Component {
         foundGroup.memberships = [...foundGroup.memberships, membership]
         this.setState({groups})
     };
-
-
 
     deleteHandler = (id) => {
         const token = localStorage.getItem("token")
@@ -81,9 +84,39 @@ class DashBoard extends Component {
         return foundGroup
     }
 
+    searchHandler = (e) => {
+        e.persist()
+        this.setState({[e.target.name]: e.target.value})
+    }
+
+    filterByMap = (groups) => {
+        if (this.state.map !== "") {
+            return groups.filter(group => group.map === this.state.map )
+        } else {
+            return groups
+        }
+    }    
+
+    // filterBySkill = (groups) => {
+    //     if (this.state.skillLevel !== "") {
+    //         return groups.filter(group => group.skillLevel === this.state.skillLevel)
+    //     } else {
+    //         return groups
+    //     }
+    // }
+
+    // filterByMic = (groups) => {
+    //     if (this.state.micRequired !== "") {
+    //         return groups.filter(group => group.micRequired === this.state.micRequired)
+    //     } else {
+    //         return groups
+    //     }
+    // }
+
     render() { 
         console.log("checking if creator:", this.checkIfCreator())
-        const {groups} = this.state
+        //const {groups} = this.state
+        let groups = [...this.state.groups]
         return (
             <div className="dashboard">
                 <ActionCableConsumer
@@ -104,8 +137,9 @@ class DashBoard extends Component {
                     onReceived={this.handleDeletedMembership}/>
                 {/* <button className="togglebtn" toggle={this.state.toggle ? "true" : "false"} onClick={this.toggleHandler}>Create a New Group</button> */}
                 {/* {this.state.toggle ? <GroupForm /> : null} */}
-                {this.state.groups.length ? <GroupContainer groups={groups} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler}/> : null}
-                {this.checkIfCreator() ? <CreatorPanelContainer myGroup={this.checkIfCreator()}/> : null }
+                <GroupFilter searchHandler={this.searchHandler}/>
+                <GroupContainer groups={this.filterByMap(groups)} handleReceivedGroups={this.handleReceivedGroups} deleteHandler={this.deleteHandler}/>
+                {this.checkIfCreator() ? <CreatorPanelContainer myGroup={this.checkIfCreator()} /> : null }
             </div>
         );
     }

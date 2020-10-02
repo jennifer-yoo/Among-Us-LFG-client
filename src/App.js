@@ -5,6 +5,7 @@ import DashBoard from './containers/DashBoard.js'
 import red from './images/characters/red_amongus.png'
 import blue from './images/characters/mirror_blue_amongus.png'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import innerSlothLogo from './images/inner-sloth-logo.png'
 
 
 class App extends React.Component {
@@ -48,7 +49,10 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-          <h1 className="header">Among Us LFG</h1>
+          <div className="logo-container">
+            <a className='logo-link' href="http://www.innersloth.com/"><img className="logo" src={innerSlothLogo} alt="Inner Sloth Logo"></img></a>
+            <h1 className="header">Among Us LFG</h1>
+          </div>
             { token ? 
               <DashBoard setToken={this.setToken} checkLogin={this.checkForLogin}/> :
               <div className="landing-pg"> 
